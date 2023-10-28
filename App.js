@@ -9,8 +9,9 @@ import GameOverScreen from "./screens/GameOverScreen";
 import AppLoading from "expo-app-loading";
 export default function App() {
   const [userNumber, setUserNumber] = useState();
+  const [guessRounds,setGuessRounds] = useState(0);
 
-  const [gameIsOver,setGameIsOver] = useState(true);
+  const [gameIsOver,setGameIsOver] = useState(true); 
 
   const [fontsLoaded] = useFonts({
     "open-sans":require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -26,8 +27,14 @@ export default function App() {
     setGameIsOver(false)
   }
 
-  function gameOverHandler(){
+  function gameOverHandler(roundsNumber){
     setGameIsOver(true)
+    setGuessRounds(roundsNumber.length)
+  }
+
+  function startNewGameHandler(){
+    setUserNumber(null);
+    setGuessRounds(0)
   }
 
   let screen = <StartGameScreen onPickNumber={pickedNumberHandler}/>;
@@ -39,7 +46,7 @@ export default function App() {
   }
 
   if(gameIsOver && userNumber){
-    screen = <GameOverScreen />
+    screen = <GameOverScreen userNumber={userNumber} roundsNumber={guessRounds} onStartNewGame={startNewGameHandler}/>
   }
 
  
